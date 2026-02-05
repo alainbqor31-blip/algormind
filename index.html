@@ -4,67 +4,398 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>AlgorMind — Mathematical Modeling & Optimization</title>
-  <meta name="description" content="AlgorMind builds mathematical models and optimization solutions to improve operational decisions, reduce costs, and increase efficiency." />
+  <meta name="description" content="AlgorMind builds mathematical models and optimization solutions to improve operational decisions, reduce costs, and increase reliability." />
+  <meta name="theme-color" content="#0B1220" />
   <style>
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:#0b1220;color:#e9eefc}
-    .wrap{max-width:1100px;margin:0 auto;padding:28px}
-    header{display:flex;justify-content:space-between;align-items:center}
-    .brand{display:flex;gap:10px;align-items:center;font-weight:800}
-    .logo{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,#4f8cff,#00c8ff)}
-    a{color:inherit;text-decoration:none}
-    .hero{padding:70px 0 30px;display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
-    h1{font-size:44px;line-height:1.05;margin:12px 0}
-    .muted{color:#b7c3e6}
-    .btn{display:inline-block;padding:12px 16px;border-radius:12px;background:linear-gradient(135deg,#4f8cff,#00c8ff);color:#07101f;font-weight:900}
-    .card{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);border-radius:18px;padding:18px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-    footer{margin-top:34px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);color:#b7c3e6}
-    @media (max-width:900px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}h1{font-size:36px}}
+    :root{
+      --bg:#0b1220;
+      --card: rgba(255,255,255,.05);
+      --border: rgba(255,255,255,.10);
+      --text:#eef2ff;
+      --muted:#b7c3e6;
+      --accent:#4f8cff;
+      --accent2:#00c8ff;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 22px;
+      --max: 1120px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 18% 0%, rgba(79,140,255,.25), transparent 60%),
+        radial-gradient(900px 520px at 88% 18%, rgba(0,200,255,.16), transparent 62%),
+        radial-gradient(800px 500px at 50% 110%, rgba(120,80,255,.12), transparent 60%),
+        var(--bg);
+      line-height:1.45;
+    }
+
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:26px 22px 80px}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(11,18,32,.82), rgba(11,18,32,.35));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .navinner{max-width:var(--max); margin:0 auto; padding:14px 22px; display:flex; align-items:center; justify-content:space-between; gap:14px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:900; letter-spacing:.2px}
+    .logo{
+      width:38px; height:38px; border-radius:14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 18px 40px rgba(79,140,255,.25);
+    }
+    .links{display:flex; gap:18px; color:var(--muted); font-weight:700; font-size:14px}
+    .links a:hover{color:var(--text)}
+    .cta{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px; border-radius:999px;
+      border:1px solid rgba(79,140,255,.35);
+      background: rgba(79,140,255,.14);
+      font-weight:900;
+    }
+    .cta:hover{transform: translateY(-1px)}
+    .cta, .card, .pill, .btn{transition:.2s ease}
+
+    /* Hero */
+    .hero{padding:54px 0 22px; display:grid; grid-template-columns: 1.15fr .85fr; gap:22px; align-items:stretch}
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      width:fit-content;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
+    }
+    h1{
+      margin:14px 0 10px;
+      font-size:46px;
+      line-height:1.03;
+      letter-spacing:-.6px;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:18px;
+      max-width: 58ch;
+    }
+    .btnrow{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      font-weight:900;
+    }
+    .btn.primary{
+      border:none;
+      color:#061021;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 18px 40px rgba(79,140,255,.18);
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn.primary:hover{filter: brightness(1.03)}
+
+    .panel{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+      height:100%;
+    }
+    .panel h3{margin:0 0 10px; font-size:16px}
+    .bullets{margin:0; padding-left:18px; color:var(--muted)}
+    .note{margin-top:12px; color:var(--muted); font-size:12.5px}
+
+    /* Sections */
+    .section{padding:34px 0}
+    .kicker{color:var(--muted); font-weight:900; text-transform:uppercase; letter-spacing:.22em; font-size:12px}
+    .title{margin:10px 0 0; font-size:26px; letter-spacing:-.2px}
+    .lead{margin:10px 0 0; color:var(--muted); max-width: 72ch}
+
+    .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:16px}
+    .card{
+      border:1px solid var(--border);
+      background: var(--card);
+      border-radius: var(--radius);
+      padding:18px;
+      box-shadow: 0 14px 35px rgba(0,0,0,.18);
+    }
+    .card:hover{transform: translateY(-2px); border-color: rgba(79,140,255,.35)}
+    .card h4{margin:6px 0 8px; font-size:16px}
+    .card p{margin:0; color:var(--muted)}
+
+    .twocol{display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top:14px}
+    .metricrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .metric{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding:10px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:900;
+      font-size:13px;
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.08);
+      margin:26px 0 0;
+    }
+
+    /* Contact */
+    .contact{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    .input, textarea{
+      width:100%;
+      margin-top:8px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:120px; resize:vertical}
+    .send{
+      margin-top:10px;
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:none;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:#061021;
+      font-weight:1000;
+      cursor:pointer;
+    }
+
+    footer{
+      margin-top:34px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.10);
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      .twocol{grid-template-columns:1fr}
+      .contact{grid-template-columns:1fr}
+      h1{font-size:38px}
+      .links{display:none}
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand"><div class="logo"></div>AlgorMind</div>
-      <a class="btn" href="#contact">Book a call →</a>
-    </header>
 
+  <div class="nav">
+    <div class="navinner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>AlgorMind</div>
+      </div>
+      <div class="links">
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a class="cta" href="#contact">Book a call →</a>
+    </div>
+  </div>
+
+  <main class="wrap">
     <section class="hero">
       <div>
-        <div class="muted">Optimization • Analytics • Automation</div>
-        <h1>Mathematical modeling that turns complex operations into clear decisions.</h1>
-        <p class="muted">
-          We build optimization and analytics solutions to reduce cost, improve utilization,
-          and increase reliability across operations.
+        <div class="pill">Optimization • Analytics • Automation</div>
+        <h1>Turn complex operations into clear decisions with mathematical models.</h1>
+        <p class="sub">
+          AlgorMind builds optimization and analytics solutions that reduce cost, improve utilization,
+          and increase reliability across planning, scheduling, and resource allocation.
         </p>
+
+        <div class="btnrow">
+          <a class="btn primary" href="#contact">Request a consultation</a>
+          <a class="btn" href="#work">See example work</a>
+        </div>
+
+        <div class="metricrow" aria-label="high-level outcomes">
+          <div class="metric">Faster planning cycles</div>
+          <div class="metric">Lower operational cost</div>
+          <div class="metric">More reliable schedules</div>
+          <div class="metric">Decision transparency</div>
+        </div>
       </div>
 
-      <div class="card">
-        <b>Services</b>
-        <ul class="muted">
-          <li>Resource optimization (LP/MIP)</li>
-          <li>Operational analytics & dashboards</li>
-          <li>Automation tools (Python/Excel)</li>
-          <li>Training and documentation</li>
+      <aside class="panel">
+        <h3>What we deliver</h3>
+        <ul class="bullets">
+          <li>Optimization models (LP/MIP) + decision support</li>
+          <li>Operational dashboards & KPIs</li>
+          <li>Automation tools (Python / Excel)</li>
+          <li>Documentation + training handoff</li>
         </ul>
-        <div class="muted" style="font-size:13px;">
-          Note: analytics/optimization consulting (not licensed engineering services).
+        <div class="divider"></div>
+        <div class="note">
+          Note: We provide analytics and optimization consulting (not licensed engineering services).
+        </div>
+      </aside>
+    </section>
+
+    <section id="services" class="section">
+      <div class="kicker">Services</div>
+      <div class="title">What AlgorMind does best</div>
+      <p class="lead">Engagements are designed to deliver measurable operational value quickly, with clear assumptions and maintainable implementation.</p>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="kicker">01</div>
+          <h4>Resource Optimization</h4>
+          <p>Scheduling, assignment, and planning models to improve utilization, reduce overtime, and balance constraints.</p>
+        </div>
+        <div class="card">
+          <div class="kicker">02</div>
+          <h4>Business Intelligence</h4>
+          <p>Dashboards and KPIs that stay operational—grounded in real workflows, updated automatically, and easy to audit.</p>
+        </div>
+        <div class="card">
+          <div class="kicker">03</div>
+          <h4>Automation & Enablement</h4>
+          <p>Tools and pipelines that eliminate manual reporting, plus training so your team can run and extend the solution.</p>
+        </div>
+      </div>
+
+      <div class="twocol">
+        <div class="panel">
+          <h3>Typical use cases</h3>
+          <ul class="bullets">
+            <li>Workforce scheduling and shift planning</li>
+            <li>Routing, dispatching, and assignment optimization</li>
+            <li>Contract scenario modeling and cost simulation</li>
+            <li>Capacity planning and utilization improvement</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Tools (examples)</h3>
+          <p class="sub" style="font-size:15px; margin-top:0">
+            Python, SQL, Excel/Power Query, Power BI, and optimization solvers (LP/MIP). Implementation is tailored to your stack.
+          </p>
+          <div class="metricrow">
+            <div class="metric">Python</div>
+            <div class="metric">SQL</div>
+            <div class="metric">Power BI</div>
+            <div class="metric">Optimization</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section>
-      <div class="grid">
-        <div class="card"><b>Resource Optimization</b><div class="muted">Scheduling, assignment, planning models.</div></div>
-        <div class="card"><b>Business Intelligence</b><div class="muted">KPIs and dashboards that stay operational.</div></div>
-        <div class="card"><b>Enablement</b><div class="muted">Handoff + training your team can use.</div></div>
+    <section id="process" class="section">
+      <div class="kicker">Process</div>
+      <div class="title">A simple delivery method that clients trust</div>
+      <p class="lead">Short cycles, clear assumptions, and artifacts your team can maintain after handoff.</p>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="kicker">Step 1</div>
+          <h4>Discovery</h4>
+          <p>Define the objective, constraints, and success metrics. Confirm data sources and decision workflow.</p>
+        </div>
+        <div class="card">
+          <div class="kicker">Step 2</div>
+          <h4>Model + Prototype</h4>
+          <p>Build a working prototype quickly. Validate logic with stakeholders and iterate on assumptions.</p>
+        </div>
+        <div class="card">
+          <div class="kicker">Step 3</div>
+          <h4>Deploy + Handoff</h4>
+          <p>Deliver dashboards/tools, documentation, and training. Ensure repeatability and governance.</p>
+        </div>
       </div>
     </section>
 
-    <footer id="contact">
-      <b>Contact</b>
-      <div class="muted">Email: youremail@algormind.com</div>
+    <section id="work" class="section">
+      <div class="kicker">Work</div>
+      <div class="title">Example project formats</div>
+      <p class="lead">Replace these with your real case studies as you complete projects. Even 2–3 strong examples make a big difference.</p>
+
+      <div class="twocol">
+        <div class="card">
+          <h4>Contract scenario modeling</h4>
+          <p>Evaluate multiple contract structures under real constraints (habituality, rest rules, cost drivers) to compare outcomes.</p>
+          <div class="metricrow">
+            <div class="metric">Scenario engine</div>
+            <div class="metric">Transparent rules</div>
+            <div class="metric">Decision-ready</div>
+          </div>
+        </div>
+        <div class="card">
+          <h4>Shift planning & utilization</h4>
+          <p>Reduce overtime and improve coverage by optimizing shifts and staffing levels while preserving compliance constraints.</p>
+          <div class="metricrow">
+            <div class="metric">Lower cost</div>
+            <div class="metric">Better coverage</div>
+            <div class="metric">Faster planning</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="kicker">Contact</div>
+      <div class="title">Let’s talk about your project</div>
+      <p class="lead">Tell me what you’re trying to optimize. I’ll respond with a clear next step and a suggested approach.</p>
+
+      <div class="contact">
+        <div class="panel">
+          <h3>Reach out</h3>
+          <p class="sub" style="font-size:15px; margin-top:0">
+            Email: <b>you@algormind.com</b><br/>
+            Location: New York, NY
+          </p>
+          <p class="note">If you don’t have your professional email yet, use your current email and we’ll update this later.</p>
+        </div>
+
+        <div class="panel">
+          <div class="kicker">Message</div>
+          <!-- Replace with your Formspree endpoint when ready -->
+          <form action="https://formspree.io/f/yourFormId" method="POST">
+            <input class="input" name="name" placeholder="Name" required />
+            <input class="input" name="email" type="email" placeholder="Email" required />
+            <textarea name="message" placeholder="What are you trying to optimize?" required></textarea>
+            <button class="send" type="submit">Send message</button>
+          </form>
+          <div class="note">Tip: Create a free Formspree form and paste the endpoint above.</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="y"></span> AlgorMind LLC. All rights reserved.</div>
+      <div>Built on Vercel • <a href="#services">Services</a> • <a href="#contact">Contact</a></div>
     </footer>
-  </div>
+  </main>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
