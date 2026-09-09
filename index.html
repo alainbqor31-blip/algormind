@@ -1,401 +1,158 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AlgorMind — Mathematical Modeling & Optimization</title>
-  <meta name="description" content="AlgorMind builds mathematical models and optimization solutions to improve operational decisions, reduce costs, and increase reliability." />
-  <meta name="theme-color" content="#0B1220" />
-  <style>
-    :root{
-      --bg:#0b1220;
-      --card: rgba(255,255,255,.05);
-      --border: rgba(255,255,255,.10);
-      --text:#eef2ff;
-      --muted:#b7c3e6;
-      --accent:#4f8cff;
-      --accent2:#00c8ff;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --radius: 22px;
-      --max: 1120px;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Algormind · Optimization for bus and BRT operations</title>
+<meta name="description" content="Algormind is a decision support practice that applies mathematical optimization to route, fleet and depot allocation in bus and bus rapid transit systems.">
+<style>
+:root{
+  --bg:#0b1220;
+  --card: rgba(255,255,255,.05);
+  --border: rgba(255,255,255,.10);
+  --text:#eef2ff;
+  --muted:#b7c3e6;
+  --accent:#4f8cff;
+  --accent2:#00c8ff;
+  --shadow: 0 20px 60px rgba(0,0,0,.35);
+  --radius: 22px;
+  --max: 1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 600px at 18% 0%, rgba(79,140,255,.25), transparent 60%),
+    radial-gradient(900px 520px at 88% 18%, rgba(0,200,255,.16), transparent 62%),
+    radial-gradient(800px 500px at 50% 110%, rgba(120,80,255,.12), transparent 60%),
+    var(--bg);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:22px 22px 80px}
+.nav{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);
+  background:rgba(11,18,32,.72);border-bottom:1px solid var(--border)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 22px}
+.brand{font-weight:700;letter-spacing:.2px;font-size:1.05rem}
+.brand span{color:var(--accent2)}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:.92rem;color:var(--muted)}
+.nav a:hover{color:var(--text)}
+@media(max-width:640px){.nav ul{display:none}}
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 600px at 18% 0%, rgba(79,140,255,.25), transparent 60%),
-        radial-gradient(900px 520px at 88% 18%, rgba(0,200,255,.16), transparent 62%),
-        radial-gradient(800px 500px at 50% 110%, rgba(120,80,255,.12), transparent 60%),
-        var(--bg);
-      line-height:1.45;
-    }
+.hero{padding:86px 0 44px;max-width:820px}
+h1{font-size:clamp(2rem,4.6vw,3.1rem);line-height:1.12;margin:0 0 20px;letter-spacing:-.5px}
+.lede{font-size:clamp(1.02rem,1.5vw,1.18rem);color:var(--muted);margin:0 0 12px}
+.kicker{display:inline-block;font-size:.78rem;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--accent2);border:1px solid var(--border);border-radius:999px;padding:6px 14px;margin-bottom:26px}
 
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:var(--max); margin:0 auto; padding:26px 22px 80px}
-    .nav{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter: blur(10px);
-      background: linear-gradient(to bottom, rgba(11,18,32,.82), rgba(11,18,32,.35));
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-    .navinner{max-width:var(--max); margin:0 auto; padding:14px 22px; display:flex; align-items:center; justify-content:space-between; gap:14px}
-    .brand{display:flex; align-items:center; gap:12px; font-weight:900; letter-spacing:.2px}
-    .logo{
-      width:38px; height:38px; border-radius:14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 18px 40px rgba(79,140,255,.25);
-    }
-    .links{display:flex; gap:18px; color:var(--muted); font-weight:700; font-size:14px}
-    .links a:hover{color:var(--text)}
-    .cta{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px; border-radius:999px;
-      border:1px solid rgba(79,140,255,.35);
-      background: rgba(79,140,255,.14);
-      font-weight:900;
-    }
-    .cta:hover{transform: translateY(-1px)}
-    .cta, .card, .pill, .btn{transition:.2s ease}
+h2{font-size:1.42rem;margin:0 0 14px;letter-spacing:-.2px}
+h3{font-size:1.02rem;margin:0 0 8px}
+section{padding:52px 0;border-top:1px solid var(--border)}
+section p{color:var(--muted);max-width:76ch;margin:0 0 14px}
+.grid{display:grid;gap:18px;margin-top:26px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:820px){.g3,.g2{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;box-shadow:var(--shadow)}
+.card p{margin:0;font-size:.94rem}
+.num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent2);
+  font-size:.8rem;letter-spacing:1px;margin-bottom:10px}
 
-    /* Hero */
-    .hero{padding:54px 0 22px; display:grid; grid-template-columns: 1.15fr .85fr; gap:22px; align-items:stretch}
-    .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      width:fit-content;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      color:var(--muted);
-      font-weight:800;
-      font-size:13px;
-    }
-    h1{
-      margin:14px 0 10px;
-      font-size:46px;
-      line-height:1.03;
-      letter-spacing:-.6px;
-    }
-    .sub{
-      margin:0;
-      color:var(--muted);
-      font-size:18px;
-      max-width: 58ch;
-    }
-    .btnrow{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:12px 16px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      font-weight:900;
-    }
-    .btn.primary{
-      border:none;
-      color:#061021;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 18px 40px rgba(79,140,255,.18);
-    }
-    .btn:hover{transform: translateY(-1px)}
-    .btn.primary:hover{filter: brightness(1.03)}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px}
+@media(max-width:820px){.facts{grid-template-columns:repeat(2,1fr)}}
+.fact{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
+.fact b{display:block;font-size:1.5rem;letter-spacing:-.5px;margin-bottom:4px}
+.fact span{font-size:.82rem;color:var(--muted)}
 
-    .panel{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:18px;
-      height:100%;
-    }
-    .panel h3{margin:0 0 10px; font-size:16px}
-    .bullets{margin:0; padding-left:18px; color:var(--muted)}
-    .note{margin-top:12px; color:var(--muted); font-size:12.5px}
-
-    /* Sections */
-    .section{padding:34px 0}
-    .kicker{color:var(--muted); font-weight:900; text-transform:uppercase; letter-spacing:.22em; font-size:12px}
-    .title{margin:10px 0 0; font-size:26px; letter-spacing:-.2px}
-    .lead{margin:10px 0 0; color:var(--muted); max-width: 72ch}
-
-    .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:16px}
-    .card{
-      border:1px solid var(--border);
-      background: var(--card);
-      border-radius: var(--radius);
-      padding:18px;
-      box-shadow: 0 14px 35px rgba(0,0,0,.18);
-    }
-    .card:hover{transform: translateY(-2px); border-color: rgba(79,140,255,.35)}
-    .card h4{margin:6px 0 8px; font-size:16px}
-    .card p{margin:0; color:var(--muted)}
-
-    .twocol{display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top:14px}
-    .metricrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
-    .metric{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
-      padding:10px 12px;
-      border-radius:999px;
-      color:var(--muted);
-      font-weight:900;
-      font-size:13px;
-    }
-
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,.08);
-      margin:26px 0 0;
-    }
-
-    /* Contact */
-    .contact{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
-      margin-top:14px;
-    }
-    .input, textarea{
-      width:100%;
-      margin-top:8px;
-      padding:11px 12px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
-      color:var(--text);
-      outline:none;
-    }
-    textarea{min-height:120px; resize:vertical}
-    .send{
-      margin-top:10px;
-      width:100%;
-      padding:12px 14px;
-      border-radius:14px;
-      border:none;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color:#061021;
-      font-weight:1000;
-      cursor:pointer;
-    }
-
-    footer{
-      margin-top:34px;
-      padding-top:20px;
-      border-top:1px solid rgba(255,255,255,.10);
-      color:var(--muted);
-      font-size:13px;
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    @media (max-width: 980px){
-      .hero{grid-template-columns:1fr}
-      .grid3{grid-template-columns:1fr}
-      .twocol{grid-template-columns:1fr}
-      .contact{grid-template-columns:1fr}
-      h1{font-size:38px}
-      .links{display:none}
-    }
-  </style>
+.cta{display:inline-block;margin-top:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#06101f;font-weight:650;padding:13px 24px;border-radius:999px;font-size:.96rem}
+.contact-line{font-size:1.06rem;margin-top:18px}
+.contact-line a{border-bottom:1px solid var(--accent)}
+footer{border-top:1px solid var(--border);color:var(--muted);font-size:.85rem;padding:26px 0 0}
+footer p{margin:0 0 6px;color:var(--muted)}
+</style>
 </head>
 <body>
 
-  <div class="nav">
-    <div class="navinner">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>AlgorMind</div>
-      </div>
-      <div class="links">
-        <a href="#services">Services</a>
-        <a href="#process">Process</a>
-        <a href="#work">Work</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <a class="cta" href="#contact">Book a call →</a>
-    </div>
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand">Algor<span>mind</span></div>
+    <ul>
+      <li><a href="#practice">Practice</a></li>
+      <li><a href="#decision">The decision</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#record">Record</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
   </div>
+</nav>
 
-  <main class="wrap">
-    <section class="hero">
-      <div>
-        <div class="pill">Optimization • Analytics • Automation</div>
-        <h1>Turn complex operations into clear decisions with mathematical models.</h1>
-        <p class="sub">
-          AlgorMind builds optimization and analytics solutions that reduce cost, improve utilization,
-          and increase reliability across planning, scheduling, and resource allocation.
-        </p>
+<div class="wrap">
 
-        <div class="btnrow">
-          <a class="btn primary" href="#contact">Request a consultation</a>
-          <a class="btn" href="#work">See example work</a>
-        </div>
+  <header class="hero">
+    <span class="kicker">Operations research for public transportation</span>
+    <h1>Optimization for bus and bus rapid transit operations</h1>
+    <p class="lede">Algormind is a decision support practice. We build mixed-integer optimization models that set which routes are run by which contracted provider or internal division, from which depots, and with which vehicle technology, calibrated to each agency's own data and operating rules.</p>
+    <p class="lede">The work sits one layer above scheduling, and the allocation it produces becomes the starting point for the scheduling tools an agency already runs.</p>
+    <a class="cta" href="#contact">Start a conversation</a>
+  </header>
 
-        <div class="metricrow" aria-label="high-level outcomes">
-          <div class="metric">Faster planning cycles</div>
-          <div class="metric">Lower operational cost</div>
-          <div class="metric">More reliable schedules</div>
-          <div class="metric">Decision transparency</div>
-        </div>
-      </div>
+  <section id="practice">
+    <h2>What we do</h2>
+    <p>We take the allocation decision that transit agencies make continuously and treat it as a formal optimization problem: minimize avoidable operating cost, mainly deadhead, while holding service levels, contractual shares, fleet availability and depot capacity as constraints.</p>
+    <div class="grid g3">
+      <div class="card"><div class="num">01</div><h3>Route, fleet and depot allocation</h3><p>Mixed-integer models that assign service to providers, depots and vehicle technologies under the operating rules that actually bind.</p></div>
+      <div class="card"><div class="num">02</div><h3>Scenario comparison</h3><p>Baseline against optimized alternatives on identical service, priced in the agency's own cost categories and reported in the terms it already files federally.</p></div>
+      <div class="card"><div class="num">03</div><h3>Zero-emission and mixed fleets</h3><p>Vehicle range, depot technology compatibility and charging capacity enter as constraints on the same assignment decisions.</p></div>
+    </div>
+  </section>
 
-      <aside class="panel">
-        <h3>What we deliver</h3>
-        <ul class="bullets">
-          <li>Optimization models (LP/MIP) + decision support</li>
-          <li>Operational dashboards & KPIs</li>
-          <li>Automation tools (Python / Excel)</li>
-          <li>Documentation + training handoff</li>
-        </ul>
-        <div class="divider"></div>
-        <div class="note">
-          Note: We provide analytics and optimization consulting (not licensed engineering services).
-        </div>
-      </aside>
-    </section>
+  <section id="decision">
+    <h2>The decision we work on</h2>
+    <p>Commercial scheduling platforms optimize crew and vehicle assignments within an allocation that has already been set, and they take that allocation as given. In many systems the allocation itself is revisited through manual judgment or through one-time studies as conditions change, without a recurring formal optimization step.</p>
+    <p>That is the layer we work at. We complement scheduling software rather than replace it, and the models are built for a specific system, not sold as packaged software.</p>
+    <p>The cost of an allocation that has drifted shows up mainly as deadhead, the closed-door movement that carries no passengers. Deadhead is reported to the National Transit Database, so the size of an agency's exposure can be established from public filings before any engagement begins. What portion of that exposure is realizable depends on each agency's variable cost structure, labor arrangements and maintenance profile.</p>
+  </section>
 
-    <section id="services" class="section">
-      <div class="kicker">Services</div>
-      <div class="title">What AlgorMind does best</div>
-      <p class="lead">Engagements are designed to deliver measurable operational value quickly, with clear assumptions and maintainable implementation.</p>
+  <section id="approach">
+    <h2>How an engagement works</h2>
+    <div class="grid g2">
+      <div class="card"><div class="num">STEP 1</div><h3>Screening, at no cost</h3><p>We build an opportunity analysis from the agency's own published NTD filings: deadhead share against the national average, what the gap represents at the agency's own reported cost per vehicle mile, and where a formal allocation step would be worth running.</p></div>
+      <div class="card"><div class="num">STEP 2</div><h3>Data review and calibration</h3><p>Under an engagement, the model is calibrated to internal operating data and reconciled against the current allocation before any scenario is produced, so differences surface and are resolved with planning staff.</p></div>
+      <div class="card"><div class="num">STEP 3</div><h3>Scenario report</h3><p>Alternatives covering identical service, each stating the cost difference and the operational change it requires, reviewed with agency staff before any decision.</p></div>
+      <div class="card"><div class="num">STEP 4</div><h3>Recurring re-optimization</h3><p>Conditions change: contracts, fleet mix, depots, demand. A calibrated model is re-run on a regular cadence rather than left as a one-time study.</p></div>
+    </div>
+  </section>
 
-      <div class="grid3">
-        <div class="card">
-          <div class="kicker">01</div>
-          <h4>Resource Optimization</h4>
-          <p>Scheduling, assignment, and planning models to improve utilization, reduce overtime, and balance constraints.</p>
-        </div>
-        <div class="card">
-          <div class="kicker">02</div>
-          <h4>Business Intelligence</h4>
-          <p>Dashboards and KPIs that stay operational—grounded in real workflows, updated automatically, and easy to audit.</p>
-        </div>
-        <div class="card">
-          <div class="kicker">03</div>
-          <h4>Automation & Enablement</h4>
-          <p>Tools and pipelines that eliminate manual reporting, plus training so your team can run and extend the solution.</p>
-        </div>
-      </div>
+  <section id="record">
+    <h2>Record</h2>
+    <p>Ten years of implementations of this class of model in bus and bus rapid transit systems in Bogotá and Cali, Colombia, for contracted providers and for a public transport authority, from January 2013 to February 2023. The models are built in GAMS and solved with commercial solvers.</p>
+    <div class="facts">
+      <div class="fact"><b>6,167</b><span>daily service blocks in the largest instance</span></div>
+      <div class="fact"><b>14</b><span>contracted providers in that instance</span></div>
+      <div class="fact"><b>43</b><span>depots</span></div>
+      <div class="fact"><b>8</b><span>vehicle typologies, diesel to battery-electric</span></div>
+    </div>
+    <p style="margin-top:22px">Client names, engagement documents and detailed results are available on request, subject to the confidentiality terms of each engagement.</p>
+  </section>
 
-      <div class="twocol">
-        <div class="panel">
-          <h3>Typical use cases</h3>
-          <ul class="bullets">
-            <li>Workforce scheduling and shift planning</li>
-            <li>Routing, dispatching, and assignment optimization</li>
-            <li>Contract scenario modeling and cost simulation</li>
-            <li>Capacity planning and utilization improvement</li>
-          </ul>
-        </div>
-        <div class="panel">
-          <h3>Tools (examples)</h3>
-          <p class="sub" style="font-size:15px; margin-top:0">
-            Python, SQL, Excel/Power Query, Power BI, and optimization solvers (LP/MIP). Implementation is tailored to your stack.
-          </p>
-          <div class="metricrow">
-            <div class="metric">Python</div>
-            <div class="metric">SQL</div>
-            <div class="metric">Power BI</div>
-            <div class="metric">Optimization</div>
-          </div>
-        </div>
-      </div>
-    </section>
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>If you operate or plan bus service and want to know what your allocation is costing you, the first analysis is built from public data and costs you nothing.</p>
+    <p class="contact-line"><a href="mailto:alain.baquero@algormind.com">alain.baquero@algormind.com</a></p>
+    <p>Alain Baquero Ortegón, Founder<br>Operations Research Analyst applied to Public Transportation<br>New York, NY</p>
+  </section>
 
-    <section id="process" class="section">
-      <div class="kicker">Process</div>
-      <div class="title">A simple delivery method that clients trust</div>
-      <p class="lead">Short cycles, clear assumptions, and artifacts your team can maintain after handoff.</p>
+  <footer>
+    <p>Algormind LLC, a New York limited liability company. NYS DOS ID 7782154.</p>
+    <p>New York, NY</p>
+  </footer>
 
-      <div class="grid3">
-        <div class="card">
-          <div class="kicker">Step 1</div>
-          <h4>Discovery</h4>
-          <p>Define the objective, constraints, and success metrics. Confirm data sources and decision workflow.</p>
-        </div>
-        <div class="card">
-          <div class="kicker">Step 2</div>
-          <h4>Model + Prototype</h4>
-          <p>Build a working prototype quickly. Validate logic with stakeholders and iterate on assumptions.</p>
-        </div>
-        <div class="card">
-          <div class="kicker">Step 3</div>
-          <h4>Deploy + Handoff</h4>
-          <p>Deliver dashboards/tools, documentation, and training. Ensure repeatability and governance.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="work" class="section">
-      <div class="kicker">Work</div>
-      <div class="title">Example project formats</div>
-      <p class="lead">Replace these with your real case studies as you complete projects. Even 2–3 strong examples make a big difference.</p>
-
-      <div class="twocol">
-        <div class="card">
-          <h4>Contract scenario modeling</h4>
-          <p>Evaluate multiple contract structures under real constraints (habituality, rest rules, cost drivers) to compare outcomes.</p>
-          <div class="metricrow">
-            <div class="metric">Scenario engine</div>
-            <div class="metric">Transparent rules</div>
-            <div class="metric">Decision-ready</div>
-          </div>
-        </div>
-        <div class="card">
-          <h4>Shift planning & utilization</h4>
-          <p>Reduce overtime and improve coverage by optimizing shifts and staffing levels while preserving compliance constraints.</p>
-          <div class="metricrow">
-            <div class="metric">Lower cost</div>
-            <div class="metric">Better coverage</div>
-            <div class="metric">Faster planning</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="section">
-      <div class="kicker">Contact</div>
-      <div class="title">Let’s talk about your project</div>
-      <p class="lead">Tell me what you’re trying to optimize. I’ll respond with a clear next step and a suggested approach.</p>
-
-      <div class="contact">
-        <div class="panel">
-          <h3>Reach out</h3>
-          <p class="sub" style="font-size:15px; margin-top:0">
-            Email: <b>you@algormind.com</b><br/>
-            Location: New York, NY
-          </p>
-          <p class="note">If you don’t have your professional email yet, use your current email and we’ll update this later.</p>
-        </div>
-
-        <div class="panel">
-          <div class="kicker">Message</div>
-          <!-- Replace with your Formspree endpoint when ready -->
-          <form action="https://formspree.io/f/yourFormId" method="POST">
-            <input class="input" name="name" placeholder="Name" required />
-            <input class="input" name="email" type="email" placeholder="Email" required />
-            <textarea name="message" placeholder="What are you trying to optimize?" required></textarea>
-            <button class="send" type="submit">Send message</button>
-          </form>
-          <div class="note">Tip: Create a free Formspree form and paste the endpoint above.</div>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <div>© <span id="y"></span> AlgorMind LLC. All rights reserved.</div>
-      <div>Built on Vercel • <a href="#services">Services</a> • <a href="#contact">Contact</a></div>
-    </footer>
-  </main>
-
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
+</div>
 </body>
 </html>
